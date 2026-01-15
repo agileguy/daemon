@@ -1,0 +1,24 @@
+[project]
+name = "daemon"
+version = "0.1.0"
+description = "Personal API daemon - a public API that represents you"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "jinja2>=3.1.0",
+    "python-multipart>=0.0.9",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "httpx>=0.27.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.0.0",
+    "httpx>=0.27.0",
+]

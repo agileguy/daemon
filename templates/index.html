@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAEMON | {{ daemon.about.name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent: #22c55e;
+            --accent-dim: #16a34a;
+            --border: #27272a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-family: 'JetBrains Mono', monospace;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-tertiary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .status-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .about-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
+
+        .about-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .about-title {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .about-location {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-bio {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .mission-text {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            padding-left: 1rem;
+            border-left: 2px solid var(--accent);
+        }
+
+        .list-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .list-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .list-simple {
+            list-style: none;
+        }
+
+        .list-simple li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .list-simple li:last-child {
+            border-bottom: none;
+        }
+
+        .routine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .routine-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+
+        .routine-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .routine-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .preferences-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .preference-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            padding: 1rem;
+        }
+
+        .preference-key {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .preference-value {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .footer-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: var(--bg-tertiary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .footer-text a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">DAEMON</div>
+            <nav>
+                <a href="/api/daemon">API</a>
+                <a href="/api/docs">Docs</a>
+                {% if daemon.contact.github %}
+                <a href="https://github.com/{{ daemon.contact.github }}" target="_blank">GitHub</a>
+                {% endif %}
+            </nav>
+        </header>
+
+        <section class="hero">
+            <div class="status-badge">LIVE</div>
+            <h1>DAEMON</h1>
+            <p class="hero-subtitle">
+                Personal API for <strong>{{ daemon.about.name }}</strong>.
+                A live view into who I am and what I care about.
+            </p>
+        </section>
+
+        <section class="section">
+            <div class="section-header">About</div>
+            <div class="about-card">
+                <div class="about-name">{{ daemon.about.name }}</div>
+                <div class="about-title">{{ daemon.about.title }}</div>
+                <div class="about-location">{{ daemon.about.location }}</div>
+                <div class="about-bio">{{ daemon.about.bio }}</div>
+            </div>
+        </section>
+
+        {% if daemon.mission %}
+        <section class="section">
+            <div class="section-header">Mission</div>
+            <p class="mission-text">{{ daemon.mission.statement }}</p>
+        </section>
+        {% endif %}
+
+        {% if daemon.current_focus %}
+        <section class="section">
+            <div class="section-header">Current Focus</div>
+            <div class="list-grid">
+                {% for item in daemon.current_focus %}
+                <div class="list-item">{{ item }}</div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        {% if daemon.interests %}
+        <section class="section">
+            <div class="section-header">Interests</div>
+            <div class="list-grid">
+                {% for item in daemon.interests %}
+                <div class="list-item">{{ item }}</div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        {% if daemon.favorite_books %}
+        <section class="section">
+            <div class="section-header">Favorite Books</div>
+            <ul class="list-simple">
+                {% for book in daemon.favorite_books %}
+                <li>{{ book }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+
+        {% if daemon.favorite_podcasts %}
+        <section class="section">
+            <div class="section-header">Favorite Podcasts</div>
+            <div class="list-grid">
+                {% for podcast in daemon.favorite_podcasts %}
+                <div class="list-item">{{ podcast }}</div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        {% if daemon.tools_i_use %}
+        <section class="section">
+            <div class="section-header">Tools I Use</div>
+            <div class="list-grid">
+                {% for tool in daemon.tools_i_use %}
+                <div class="list-item">{{ tool }}</div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        {% if daemon.daily_routine %}
+        <section class="section">
+            <div class="section-header">Daily Routine</div>
+            <div class="routine-grid">
+                {% for key, value in daemon.daily_routine.items() %}
+                <div class="routine-card">
+                    <div class="routine-label">{{ key }}</div>
+                    <div class="routine-text">{{ value }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        {% if daemon.preferences %}
+        <section class="section">
+            <div class="section-header">Preferences</div>
+            <div class="preferences-grid">
+                {% for key, value in daemon.preferences.items() %}
+                <div class="preference-item">
+                    <div class="preference-key">{{ key }}</div>
+                    <div class="preference-value">{{ value }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        {% if daemon.predictions %}
+        <section class="section">
+            <div class="section-header">Predictions</div>
+            <ul class="list-simple">
+                {% for prediction in daemon.predictions %}
+                <li>{{ prediction }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+
+        <footer>
+            <div class="footer-badges">
+                <span class="footer-badge">API</span>
+                <span class="footer-badge">Real-time</span>
+                <span class="footer-badge">Public</span>
+            </div>
+            <p class="footer-text">
+                Powered by <a href="https://github.com/agileguy/daemon">Daemon</a> |
+                Inspired by <a href="https://daemon.danielmiessler.com">Daniel Miessler</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
