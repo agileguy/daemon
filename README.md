@@ -19,7 +19,7 @@ A daemon is a live view into what you're doing and what you care about, designed
 # Build and run
 docker compose up -d
 
-# View at http://localhost:8000
+# View at http://localhost:7200
 ```
 
 ### Local Development
@@ -31,7 +31,7 @@ uv pip install -e .
 # Run the server
 uvicorn app.main:app --reload
 
-# View at http://localhost:8000
+# View at http://localhost:7200
 ```
 
 ## Customization
