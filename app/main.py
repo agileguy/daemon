@@ -11,6 +11,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.openapi.docs import get_swagger_ui_html
 
 from .parser import get_daemon_data
 
@@ -20,14 +21,245 @@ DATA_DIR = BASE_DIR / "data"
 TEMPLATES_DIR = BASE_DIR / "templates"
 STATIC_DIR = BASE_DIR / "static"
 
-# FastAPI app
+# Custom Swagger UI dark theme CSS
+SWAGGER_DARK_CSS = """
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #111111;
+    --bg-tertiary: #1a1a1a;
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --accent: #22c55e;
+}
+
+body {
+    background: var(--bg-primary) !important;
+}
+
+.swagger-ui {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+.swagger-ui .topbar {
+    background: var(--bg-secondary) !important;
+    border-bottom: 1px solid #27272a;
+}
+
+.swagger-ui .topbar .download-url-wrapper .download-url-button {
+    background: var(--accent) !important;
+    color: #000 !important;
+}
+
+.swagger-ui .info {
+    margin: 30px 0 !important;
+}
+
+.swagger-ui .info .title {
+    font-family: 'JetBrains Mono', monospace !important;
+    color: var(--text-primary) !important;
+}
+
+.swagger-ui .info .description p,
+.swagger-ui .info .description {
+    color: var(--text-secondary) !important;
+}
+
+.swagger-ui .scheme-container {
+    background: var(--bg-secondary) !important;
+    box-shadow: none !important;
+    border: 1px solid #27272a !important;
+}
+
+.swagger-ui .opblock-tag {
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid #27272a !important;
+}
+
+.swagger-ui .opblock {
+    background: var(--bg-secondary) !important;
+    border: 1px solid #27272a !important;
+    box-shadow: none !important;
+}
+
+.swagger-ui .opblock .opblock-summary {
+    border-bottom: 1px solid #27272a !important;
+}
+
+.swagger-ui .opblock .opblock-summary-method {
+    font-family: 'JetBrains Mono', monospace !important;
+}
+
+.swagger-ui .opblock.opblock-get {
+    background: rgba(34, 197, 94, 0.1) !important;
+    border-color: rgba(34, 197, 94, 0.3) !important;
+}
+
+.swagger-ui .opblock.opblock-get .opblock-summary-method {
+    background: var(--accent) !important;
+}
+
+.swagger-ui .opblock.opblock-post {
+    background: rgba(59, 130, 246, 0.1) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+.swagger-ui .opblock.opblock-put {
+    background: rgba(249, 115, 22, 0.1) !important;
+    border-color: rgba(249, 115, 22, 0.3) !important;
+}
+
+.swagger-ui .opblock.opblock-delete {
+    background: rgba(239, 68, 68, 0.1) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.swagger-ui .opblock .opblock-summary-path,
+.swagger-ui .opblock .opblock-summary-description {
+    color: var(--text-primary) !important;
+}
+
+.swagger-ui .opblock-description-wrapper p,
+.swagger-ui .opblock-body pre,
+.swagger-ui .response-col_description {
+    color: var(--text-secondary) !important;
+}
+
+.swagger-ui .opblock-section-header {
+    background: var(--bg-tertiary) !important;
+    box-shadow: none !important;
+}
+
+.swagger-ui .opblock-section-header h4 {
+    color: var(--text-primary) !important;
+}
+
+.swagger-ui table thead tr td,
+.swagger-ui table thead tr th {
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid #27272a !important;
+}
+
+.swagger-ui .parameter__name,
+.swagger-ui .parameter__type,
+.swagger-ui .response-col_status {
+    color: var(--text-primary) !important;
+}
+
+.swagger-ui .model-title {
+    color: var(--text-primary) !important;
+}
+
+.swagger-ui .model {
+    color: var(--text-secondary) !important;
+}
+
+.swagger-ui section.models {
+    border: 1px solid #27272a !important;
+}
+
+.swagger-ui section.models.is-open h4 {
+    border-bottom: 1px solid #27272a !important;
+}
+
+.swagger-ui .model-box {
+    background: var(--bg-secondary) !important;
+}
+
+.swagger-ui .highlight-code,
+.swagger-ui .microlight {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+}
+
+.swagger-ui .btn {
+    border: 1px solid #27272a !important;
+    color: var(--text-primary) !important;
+    background: var(--bg-tertiary) !important;
+}
+
+.swagger-ui .btn:hover {
+    background: var(--bg-secondary) !important;
+}
+
+.swagger-ui select {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid #27272a !important;
+}
+
+.swagger-ui input[type=text] {
+    background: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid #27272a !important;
+}
+
+.swagger-ui .servers-title,
+.swagger-ui .servers label {
+    color: var(--text-primary) !important;
+}
+
+.swagger-ui .response-col_links {
+    color: var(--text-secondary) !important;
+}
+
+/* Hide the default topbar logo */
+.swagger-ui .topbar-wrapper img {
+    display: none;
+}
+
+.swagger-ui .topbar-wrapper::before {
+    content: 'DAEMON';
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-primary);
+}
+"""
+
+# FastAPI app (disable default docs to use custom)
 app = FastAPI(
     title="Daemon",
     description="Personal API - A public API that represents you",
     version="0.1.0",
-    docs_url="/api/docs",
+    docs_url=None,
     redoc_url="/api/redoc",
 )
+
+
+@app.get("/api/docs", include_in_schema=False)
+async def custom_swagger_ui_html():
+    """Custom Swagger UI with dark theme."""
+    return HTMLResponse(
+        content=f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daemon - API Docs</title>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css">
+    <style>{SWAGGER_DARK_CSS}</style>
+</head>
+<body>
+    <div id="swagger-ui"></div>
+    <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+    <script>
+        SwaggerUIBundle({{
+            url: '/openapi.json',
+            dom_id: '#swagger-ui',
+            presets: [SwaggerUIBundle.presets.apis, SwaggerUIBundle.SwaggerUIStandalonePreset],
+            layout: "BaseLayout",
+            deepLinking: true,
+            showExtensions: true,
+            showCommonExtensions: true
+        }});
+    </script>
+</body>
+</html>
+""",
+        media_type="text/html",
+    )
 
 # Templates
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
