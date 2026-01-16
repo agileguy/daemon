@@ -32,28 +32,70 @@
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
+            overflow: hidden;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem;
+        #app {
+            display: flex;
+            height: 100vh;
         }
 
-        header {
+        /* Canvas Area */
+        #canvas-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #network-canvas {
+            display: block;
+            cursor: grab;
+        }
+
+        #network-canvas:active {
+            cursor: grabbing;
+        }
+
+        /* Header Overlay */
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 3rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(to bottom, rgba(10,10,10,0.9) 0%, transparent 100%);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .header-overlay > * {
+            pointer-events: auto;
         }
 
         .logo {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
         }
 
         nav {
@@ -64,308 +106,252 @@
         nav a {
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.875rem;
+            font-size: 0.8125rem;
             font-family: 'JetBrains Mono', monospace;
             transition: color 0.2s;
         }
 
         nav a:hover {
+            color: var(--accent);
+        }
+
+        /* Instructions */
+        .instructions {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: rgba(10,10,10,0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            border: 1px solid var(--border);
+            z-index: 10;
+        }
+
+        /* Content Panel */
+        #content-panel {
+            width: 0;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            overflow-y: auto;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        #content-panel.open {
+            width: 450px;
+        }
+
+        .panel-header {
+            position: sticky;
+            top: 0;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 5;
+        }
+
+        .panel-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0.25rem;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
             color: var(--text-primary);
         }
 
-        .hero {
-            text-align: center;
-            padding: 3rem 0;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 3rem;
-        }
-
-        .hero h1 {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 3rem;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            margin-bottom: 0.5rem;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--bg-tertiary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-        }
-
-        .status-badge::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .hero-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.125rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .section {
-            margin-bottom: 3rem;
-        }
-
-        .section-header {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .about-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
+        .panel-content {
             padding: 1.5rem;
         }
 
-        .about-name {
-            font-size: 1.5rem;
+        /* Content Styles */
+        .content-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-name {
+            font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 0.25rem;
         }
 
-        .about-title {
+        .content-subtitle {
             color: var(--text-secondary);
+            font-size: 0.875rem;
             margin-bottom: 0.5rem;
         }
 
-        .about-location {
+        .content-location {
             color: var(--text-muted);
-            font-size: 0.875rem;
+            font-size: 0.8125rem;
             margin-bottom: 1rem;
         }
 
-        .about-bio {
+        .content-text {
             color: var(--text-secondary);
+            font-size: 0.9375rem;
             line-height: 1.7;
         }
 
-        .mission-text {
-            font-size: 1.125rem;
-            color: var(--text-secondary);
+        .content-quote {
             font-style: italic;
+            color: var(--text-secondary);
             padding-left: 1rem;
             border-left: 2px solid var(--accent);
         }
 
-        .list-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 0.75rem;
-        }
-
-        .list-item {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 0.375rem;
-            padding: 0.75rem 1rem;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .list-simple {
+        .content-list {
             list-style: none;
         }
 
-        .list-simple li {
+        .content-list li {
             padding: 0.5rem 0;
             border-bottom: 1px solid var(--border);
             color: var(--text-secondary);
+            font-size: 0.875rem;
         }
 
-        .list-simple li:last-child {
+        .content-list li:last-child {
             border-bottom: none;
         }
 
-        .routine-grid {
+        .content-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .content-grid-item {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 0.25rem;
+            padding: 0.625rem 0.875rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        .content-kv {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .content-kv-item {
+            display: flex;
             gap: 1rem;
         }
 
-        .routine-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            padding: 1rem;
-        }
-
-        .routine-label {
+        .content-kv-key {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
-            font-weight: 600;
             color: var(--accent);
             text-transform: uppercase;
+            min-width: 80px;
+            padding-top: 0.125rem;
+        }
+
+        .content-kv-value {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            flex: 1;
+        }
+
+        /* AI Section Special */
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
             margin-bottom: 0.5rem;
         }
 
-        .routine-text {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .preferences-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .preference-item {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 0.375rem;
-            padding: 1rem;
-        }
-
-        .preference-key {
+        .ai-name {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 0.25rem;
-        }
-
-        .preference-value {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 2rem 0;
-            margin-top: 3rem;
-            text-align: center;
-        }
-
-        .footer-badges {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .footer-badge {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            background: var(--bg-tertiary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.25rem;
-        }
-
-        .footer-text {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .footer-text a {
+            font-size: 1.125rem;
+            font-weight: 600;
             color: var(--accent);
-            text-decoration: none;
         }
 
-        /* MCP Integration Section */
-        .mcp-section {
-            margin-bottom: 3rem;
+        .ai-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+            background: var(--bg-primary);
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid var(--border);
         }
 
-        .mcp-card {
-            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
-            border: 1px solid var(--accent);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
-        }
-
+        /* MCP Section */
         .mcp-header {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
             margin-bottom: 1rem;
         }
 
         .mcp-logo {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.5rem;
             font-weight: 700;
             color: var(--accent);
             background: rgba(34, 197, 94, 0.15);
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            letter-spacing: 0.1em;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.375rem;
+            letter-spacing: 0.05em;
         }
 
-        .mcp-badge {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            background: var(--bg-primary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.25rem;
-            border: 1px solid var(--border);
-        }
-
-        .mcp-description {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            font-size: 0.9375rem;
-        }
-
-        .mcp-code-block {
+        .code-block {
             background: var(--bg-primary);
             border: 1px solid var(--border);
-            border-radius: 0.5rem;
+            border-radius: 0.375rem;
             overflow: hidden;
-            margin-bottom: 1rem;
+            margin: 1rem 0;
         }
 
         .code-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.75rem;
             background: var(--bg-tertiary);
             border-bottom: 1px solid var(--border);
         }
 
         .code-label {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
+            font-size: 0.6875rem;
             color: var(--text-muted);
         }
 
         .copy-btn {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.6875rem;
+            font-size: 0.625rem;
             color: var(--accent);
             background: transparent;
             border: 1px solid var(--accent);
-            padding: 0.25rem 0.5rem;
+            padding: 0.125rem 0.375rem;
             border-radius: 0.25rem;
             cursor: pointer;
             transition: all 0.2s;
@@ -376,372 +362,447 @@
             color: var(--bg-primary);
         }
 
-        .mcp-code-block pre {
+        .code-block pre {
             margin: 0;
-            padding: 1rem;
+            padding: 0.75rem;
             overflow-x: auto;
         }
 
-        .mcp-code-block code {
+        .code-block code {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8125rem;
+            font-size: 0.75rem;
             color: var(--text-primary);
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .mcp-tools {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 0.75rem;
-        }
-
-        .tool-item {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 0.375rem;
-            padding: 0.75rem;
-        }
-
-        .tool-name {
-            display: block;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8125rem;
-            color: var(--accent);
-            margin-bottom: 0.25rem;
-        }
-
-        .tool-desc {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        /* AI Assistant Section */
-        .ai-card {
-            background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(34, 197, 94, 0.05) 100%);
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--accent);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-        }
-
-        .ai-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .ai-name {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .ai-model {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            background: var(--bg-tertiary);
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            border: 1px solid var(--border);
-        }
-
-        .ai-platform {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .ai-description {
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 1.25rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .ai-details {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .ai-detail-item {
-            display: grid;
-            grid-template-columns: 100px 1fr;
-            gap: 1rem;
-            align-items: start;
-        }
-
-        .ai-detail-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--accent);
-            text-transform: uppercase;
-            padding-top: 0.125rem;
-        }
-
-        .ai-detail-value {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .ai-capabilities {
-            margin-top: 1.25rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .ai-capabilities-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 0.75rem;
-        }
-
-        .ai-capabilities-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 0.5rem;
         }
 
-        .ai-capability-item {
-            font-size: 0.8125rem;
-            color: var(--text-secondary);
+        .mcp-tool {
             background: var(--bg-primary);
             border: 1px solid var(--border);
             border-radius: 0.25rem;
             padding: 0.5rem 0.75rem;
         }
+
+        .mcp-tool-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+        }
+
+        .mcp-tool-desc {
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #content-panel.open {
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+                max-width: 400px;
+                z-index: 100;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">DAEMON</div>
-            <nav>
-                <a href="/api/daemon">API</a>
-                <a href="/api/docs">Docs</a>
-                {% if daemon.contact.github %}
-                <a href="https://github.com/{{ daemon.contact.github }}" target="_blank">GitHub</a>
-                {% endif %}
-            </nav>
-        </header>
-
-        <section class="hero">
-            <div class="status-badge">LIVE</div>
-            <h1>DAEMON</h1>
-            <p class="hero-subtitle">
-                Personal API for <strong>{{ daemon.about.name }}</strong>.
-                A live view into who I am and what I care about.
-            </p>
-        </section>
-
-        <section class="section mcp-section">
-            <div class="section-header">AI Integration</div>
-            <div class="mcp-card">
-                <div class="mcp-header">
-                    <div class="mcp-logo">MCP</div>
-                    <div class="mcp-badge">Model Context Protocol</div>
+    <div id="app">
+        <div id="canvas-container">
+            <canvas id="network-canvas"></canvas>
+            <div class="header-overlay">
+                <div class="logo">
+                    <span class="status-dot"></span>
+                    DAEMON
                 </div>
-                <p class="mcp-description">
-                    Connect your AI assistant directly to this daemon. Add to your MCP configuration:
-                </p>
-                <div class="mcp-code-block">
-                    <div class="code-header">
-                        <span class="code-label">claude_desktop_config.json</span>
-                        <button class="copy-btn" onclick="copyConfig()">Copy</button>
-                    </div>
-                    <pre><code>{
+                <nav>
+                    <a href="/api/daemon">API</a>
+                    <a href="/api/docs">Docs</a>
+                    {% if daemon.contact.github %}
+                    <a href="https://github.com/{{ daemon.contact.github }}" target="_blank">GitHub</a>
+                    {% endif %}
+                </nav>
+            </div>
+            <div class="instructions">drag nodes to explore &bull; click to view content</div>
+        </div>
+        <div id="content-panel">
+            <div class="panel-header">
+                <span class="panel-title" id="panel-title">Section</span>
+                <button class="close-btn" onclick="closePanel()">&times;</button>
+            </div>
+            <div class="panel-content" id="panel-content"></div>
+        </div>
+    </div>
+
+    <!-- Section Data -->
+    <script id="daemon-data" type="application/json">
+    {{ daemon | tojson | safe }}
+    </script>
+
+    <script>
+        // Get daemon data
+        const daemon = JSON.parse(document.getElementById('daemon-data').textContent);
+
+        // Canvas setup
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('canvas-container');
+
+        function resizeCanvas() {
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Section definitions
+        const sections = [
+            { id: 'about', label: 'About', color: '#22c55e' },
+            { id: 'mission', label: 'Mission', color: '#3b82f6' },
+            { id: 'current_focus', label: 'Focus', color: '#f59e0b' },
+            { id: 'interests', label: 'Interests', color: '#ec4899' },
+            { id: 'favorite_books', label: 'Books', color: '#8b5cf6' },
+            { id: 'tools_i_use', label: 'Tools', color: '#06b6d4' },
+            { id: 'ai_assistant', label: 'AI Assistant', color: '#22c55e' },
+            { id: 'ai_capabilities', label: 'AI Capabilities', color: '#10b981' },
+            { id: 'daily_routine', label: 'Routine', color: '#f97316' },
+            { id: 'preferences', label: 'Preferences', color: '#a855f7' },
+            { id: 'predictions', label: 'Predictions', color: '#6366f1' },
+            { id: 'contact', label: 'Contact', color: '#14b8a6' },
+            { id: 'mcp', label: 'MCP', color: '#22c55e' }
+        ].filter(s => s.id === 'mcp' || daemon[s.id]);
+
+        // Create nodes
+        const nodes = sections.map((section, i) => {
+            const angle = (i / sections.length) * Math.PI * 2;
+            const radius = Math.min(canvas.width, canvas.height) * 0.25;
+            return {
+                ...section,
+                x: canvas.width / 2 + Math.cos(angle) * radius + (Math.random() - 0.5) * 100,
+                y: canvas.height / 2 + Math.sin(angle) * radius + (Math.random() - 0.5) * 100,
+                vx: 0,
+                vy: 0,
+                radius: 35
+            };
+        });
+
+        // Create connections (strings)
+        const connections = [];
+        for (let i = 0; i < nodes.length; i++) {
+            // Connect to next 2-3 nodes in circular fashion
+            for (let j = 1; j <= 2; j++) {
+                connections.push({
+                    source: i,
+                    target: (i + j) % nodes.length
+                });
+            }
+            // Add some random connections
+            if (Math.random() > 0.5) {
+                const randomTarget = Math.floor(Math.random() * nodes.length);
+                if (randomTarget !== i) {
+                    connections.push({ source: i, target: randomTarget });
+                }
+            }
+        }
+
+        // Physics
+        let draggedNode = null;
+        let selectedNode = null;
+        let mouseX = 0, mouseY = 0;
+
+        function applyPhysics() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            nodes.forEach((node, i) => {
+                if (node === draggedNode) return;
+
+                // Attraction to center
+                const dx = centerX - node.x;
+                const dy = centerY - node.y;
+                node.vx += dx * 0.0005;
+                node.vy += dy * 0.0005;
+
+                // Repulsion from other nodes
+                nodes.forEach((other, j) => {
+                    if (i === j) return;
+                    const dx = node.x - other.x;
+                    const dy = node.y - other.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                    if (dist < 150) {
+                        const force = (150 - dist) / dist * 0.5;
+                        node.vx += dx * force * 0.01;
+                        node.vy += dy * force * 0.01;
+                    }
+                });
+
+                // Spring force from connections
+                connections.forEach(conn => {
+                    if (conn.source === i || conn.target === i) {
+                        const other = nodes[conn.source === i ? conn.target : conn.source];
+                        const dx = other.x - node.x;
+                        const dy = other.y - node.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                        const targetDist = 120;
+                        const force = (dist - targetDist) * 0.003;
+                        node.vx += dx / dist * force;
+                        node.vy += dy / dist * force;
+                    }
+                });
+
+                // Apply velocity with damping
+                node.x += node.vx;
+                node.y += node.vy;
+                node.vx *= 0.95;
+                node.vy *= 0.95;
+
+                // Keep in bounds
+                node.x = Math.max(node.radius, Math.min(canvas.width - node.radius, node.x));
+                node.y = Math.max(node.radius, Math.min(canvas.height - node.radius, node.y));
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw connections (strings)
+            connections.forEach(conn => {
+                const source = nodes[conn.source];
+                const target = nodes[conn.target];
+
+                ctx.beginPath();
+                ctx.moveTo(source.x, source.y);
+                ctx.lineTo(target.x, target.y);
+                ctx.strokeStyle = 'rgba(39, 39, 42, 0.6)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            });
+
+            // Draw nodes
+            nodes.forEach(node => {
+                const isSelected = node === selectedNode;
+                const isHovered = getNodeAtPosition(mouseX, mouseY) === node;
+
+                // Glow effect
+                if (isSelected || isHovered) {
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, node.radius + 10, 0, Math.PI * 2);
+                    const gradient = ctx.createRadialGradient(node.x, node.y, node.radius, node.x, node.y, node.radius + 20);
+                    gradient.addColorStop(0, node.color + '40');
+                    gradient.addColorStop(1, 'transparent');
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                }
+
+                // Node circle
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+                ctx.fillStyle = isSelected ? node.color : (isHovered ? '#1a1a1a' : '#111111');
+                ctx.fill();
+                ctx.strokeStyle = isSelected ? node.color : (isHovered ? node.color : '#27272a');
+                ctx.lineWidth = isSelected ? 2 : 1;
+                ctx.stroke();
+
+                // Node label
+                ctx.fillStyle = isSelected ? '#0a0a0a' : (isHovered ? node.color : '#a1a1aa');
+                ctx.font = '600 11px "JetBrains Mono", monospace';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(node.label.toUpperCase(), node.x, node.y);
+            });
+
+            applyPhysics();
+            requestAnimationFrame(draw);
+        }
+
+        function getNodeAtPosition(x, y) {
+            for (const node of nodes) {
+                const dx = x - node.x;
+                const dy = y - node.y;
+                if (dx * dx + dy * dy < node.radius * node.radius) {
+                    return node;
+                }
+            }
+            return null;
+        }
+
+        // Mouse events
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+
+            if (draggedNode) {
+                draggedNode.x = mouseX;
+                draggedNode.y = mouseY;
+                draggedNode.vx = 0;
+                draggedNode.vy = 0;
+            }
+
+            canvas.style.cursor = getNodeAtPosition(mouseX, mouseY) ? 'pointer' : 'grab';
+        });
+
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            draggedNode = getNodeAtPosition(x, y);
+            if (draggedNode) {
+                canvas.style.cursor = 'grabbing';
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            if (draggedNode) {
+                canvas.style.cursor = 'pointer';
+            }
+            draggedNode = null;
+        });
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const node = getNodeAtPosition(x, y);
+            if (node) {
+                selectedNode = node;
+                showContent(node);
+            }
+        });
+
+        // Content panel
+        function showContent(node) {
+            const panel = document.getElementById('content-panel');
+            const title = document.getElementById('panel-title');
+            const content = document.getElementById('panel-content');
+
+            title.textContent = node.label;
+            title.style.color = node.color;
+            content.innerHTML = getContentHTML(node.id);
+            panel.classList.add('open');
+        }
+
+        function closePanel() {
+            document.getElementById('content-panel').classList.remove('open');
+            selectedNode = null;
+        }
+
+        function getContentHTML(sectionId) {
+            switch(sectionId) {
+                case 'about':
+                    return `
+                        <div class="content-card">
+                            <div class="content-name">${daemon.about.name}</div>
+                            <div class="content-subtitle">${daemon.about.title}</div>
+                            <div class="content-location">${daemon.about.location}</div>
+                            <div class="content-text">${daemon.about.bio}</div>
+                        </div>
+                    `;
+                case 'mission':
+                    return `<p class="content-quote">${daemon.mission.statement}</p>`;
+                case 'current_focus':
+                    return `<ul class="content-list">${daemon.current_focus.map(i => `<li>${i}</li>`).join('')}</ul>`;
+                case 'interests':
+                    return `<div class="content-grid">${daemon.interests.map(i => `<div class="content-grid-item">${i}</div>`).join('')}</div>`;
+                case 'favorite_books':
+                    return `<ul class="content-list">${daemon.favorite_books.map(b => `<li>${b}</li>`).join('')}</ul>`;
+                case 'tools_i_use':
+                    return `<div class="content-grid">${daemon.tools_i_use.map(t => `<div class="content-grid-item">${t}</div>`).join('')}</div>`;
+                case 'ai_assistant':
+                    return `
+                        <div class="content-card">
+                            <div class="ai-header">
+                                <span class="ai-name">${daemon.ai_assistant.name}</span>
+                                <span class="ai-badge">${daemon.ai_assistant.model}</span>
+                            </div>
+                            <div class="content-subtitle">${daemon.ai_assistant.platform}</div>
+                            <div class="content-text" style="margin: 1rem 0">${daemon.ai_assistant.description}</div>
+                            <div class="content-kv">
+                                <div class="content-kv-item">
+                                    <span class="content-kv-key">Personality</span>
+                                    <span class="content-kv-value">${daemon.ai_assistant.personality}</span>
+                                </div>
+                                <div class="content-kv-item">
+                                    <span class="content-kv-key">Stack</span>
+                                    <span class="content-kv-value">${daemon.ai_assistant.stack}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                case 'ai_capabilities':
+                    return `<div class="content-grid">${daemon.ai_capabilities.map(c => `<div class="content-grid-item">${c}</div>`).join('')}</div>`;
+                case 'daily_routine':
+                    return `<div class="content-kv">${Object.entries(daemon.daily_routine).map(([k,v]) => `
+                        <div class="content-kv-item">
+                            <span class="content-kv-key">${k}</span>
+                            <span class="content-kv-value">${v}</span>
+                        </div>
+                    `).join('')}</div>`;
+                case 'preferences':
+                    return `<div class="content-kv">${Object.entries(daemon.preferences).map(([k,v]) => `
+                        <div class="content-kv-item">
+                            <span class="content-kv-key">${k}</span>
+                            <span class="content-kv-value">${v}</span>
+                        </div>
+                    `).join('')}</div>`;
+                case 'predictions':
+                    return `<ul class="content-list">${daemon.predictions.map(p => `<li>${p}</li>`).join('')}</ul>`;
+                case 'contact':
+                    return `<div class="content-kv">${Object.entries(daemon.contact).map(([k,v]) => `
+                        <div class="content-kv-item">
+                            <span class="content-kv-key">${k}</span>
+                            <span class="content-kv-value">${v}</span>
+                        </div>
+                    `).join('')}</div>`;
+                case 'mcp':
+                    return `
+                        <div class="mcp-header">
+                            <span class="mcp-logo">MCP</span>
+                            <span style="color: var(--text-muted); font-size: 0.75rem;">Model Context Protocol</span>
+                        </div>
+                        <p class="content-text">Connect your AI assistant directly to this daemon:</p>
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span class="code-label">claude_desktop_config.json</span>
+                                <button class="copy-btn" onclick="copyConfig()">Copy</button>
+                            </div>
+                            <pre><code>{
   "mcpServers": {
     "daemon": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "danataka/daemon", "python", "-m", "app.mcp_server"]
+      "args": ["run", "-i", "--rm",
+        "danataka/daemon",
+        "python", "-m", "app.mcp_server"]
     }
   }
 }</code></pre>
-                </div>
-                <div class="mcp-tools">
-                    <div class="tool-item">
-                        <span class="tool-name">get_daemon_data</span>
-                        <span class="tool-desc">Get all personal data</span>
-                    </div>
-                    <div class="tool-item">
-                        <span class="tool-name">get_daemon_section</span>
-                        <span class="tool-desc">Get specific section</span>
-                    </div>
-                    <div class="tool-item">
-                        <span class="tool-name">list_daemon_sections</span>
-                        <span class="tool-desc">List available sections</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+                        </div>
+                        <div class="mcp-tools">
+                            <div class="mcp-tool">
+                                <div class="mcp-tool-name">get_daemon_data</div>
+                                <div class="mcp-tool-desc">Get all personal data</div>
+                            </div>
+                            <div class="mcp-tool">
+                                <div class="mcp-tool-name">get_daemon_section</div>
+                                <div class="mcp-tool-desc">Get specific section</div>
+                            </div>
+                            <div class="mcp-tool">
+                                <div class="mcp-tool-name">list_daemon_sections</div>
+                                <div class="mcp-tool-desc">List available sections</div>
+                            </div>
+                        </div>
+                    `;
+                default:
+                    return '<p class="content-text">Content not available</p>';
+            }
+        }
 
-        <section class="section">
-            <div class="section-header">About</div>
-            <div class="about-card">
-                <div class="about-name">{{ daemon.about.name }}</div>
-                <div class="about-title">{{ daemon.about.title }}</div>
-                <div class="about-location">{{ daemon.about.location }}</div>
-                <div class="about-bio">{{ daemon.about.bio }}</div>
-            </div>
-        </section>
-
-        {% if daemon.mission %}
-        <section class="section">
-            <div class="section-header">Mission</div>
-            <p class="mission-text">{{ daemon.mission.statement }}</p>
-        </section>
-        {% endif %}
-
-        {% if daemon.current_focus %}
-        <section class="section">
-            <div class="section-header">Current Focus</div>
-            <div class="list-grid">
-                {% for item in daemon.current_focus %}
-                <div class="list-item">{{ item }}</div>
-                {% endfor %}
-            </div>
-        </section>
-        {% endif %}
-
-        {% if daemon.interests %}
-        <section class="section">
-            <div class="section-header">Interests</div>
-            <div class="list-grid">
-                {% for item in daemon.interests %}
-                <div class="list-item">{{ item }}</div>
-                {% endfor %}
-            </div>
-        </section>
-        {% endif %}
-
-        {% if daemon.favorite_books %}
-        <section class="section">
-            <div class="section-header">Favorite Books</div>
-            <ul class="list-simple">
-                {% for book in daemon.favorite_books %}
-                <li>{{ book }}</li>
-                {% endfor %}
-            </ul>
-        </section>
-        {% endif %}
-
-        {% if daemon.favorite_podcasts %}
-        <section class="section">
-            <div class="section-header">Favorite Podcasts</div>
-            <div class="list-grid">
-                {% for podcast in daemon.favorite_podcasts %}
-                <div class="list-item">{{ podcast }}</div>
-                {% endfor %}
-            </div>
-        </section>
-        {% endif %}
-
-        {% if daemon.tools_i_use %}
-        <section class="section">
-            <div class="section-header">Tools I Use</div>
-            <div class="list-grid">
-                {% for tool in daemon.tools_i_use %}
-                <div class="list-item">{{ tool }}</div>
-                {% endfor %}
-            </div>
-        </section>
-        {% endif %}
-
-        {% if daemon.ai_assistant %}
-        <section class="section">
-            <div class="section-header">AI Assistant</div>
-            <div class="ai-card">
-                <div class="ai-header">
-                    <div class="ai-name">{{ daemon.ai_assistant.name }}</div>
-                    <div class="ai-model">{{ daemon.ai_assistant.model }}</div>
-                </div>
-                <div class="ai-platform">{{ daemon.ai_assistant.platform }}</div>
-                <div class="ai-description">{{ daemon.ai_assistant.description }}</div>
-                <div class="ai-details">
-                    <div class="ai-detail-item">
-                        <div class="ai-detail-label">Personality</div>
-                        <div class="ai-detail-value">{{ daemon.ai_assistant.personality }}</div>
-                    </div>
-                    <div class="ai-detail-item">
-                        <div class="ai-detail-label">Stack</div>
-                        <div class="ai-detail-value">{{ daemon.ai_assistant.stack }}</div>
-                    </div>
-                </div>
-                {% if daemon.ai_capabilities %}
-                <div class="ai-capabilities">
-                    <div class="ai-capabilities-label">Capabilities</div>
-                    <div class="ai-capabilities-grid">
-                        {% for capability in daemon.ai_capabilities %}
-                        <div class="ai-capability-item">{{ capability }}</div>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-        </section>
-        {% endif %}
-
-        {% if daemon.daily_routine %}
-        <section class="section">
-            <div class="section-header">Daily Routine</div>
-            <div class="routine-grid">
-                {% for key, value in daemon.daily_routine.items() %}
-                <div class="routine-card">
-                    <div class="routine-label">{{ key }}</div>
-                    <div class="routine-text">{{ value }}</div>
-                </div>
-                {% endfor %}
-            </div>
-        </section>
-        {% endif %}
-
-        {% if daemon.preferences %}
-        <section class="section">
-            <div class="section-header">Preferences</div>
-            <div class="preferences-grid">
-                {% for key, value in daemon.preferences.items() %}
-                <div class="preference-item">
-                    <div class="preference-key">{{ key }}</div>
-                    <div class="preference-value">{{ value }}</div>
-                </div>
-                {% endfor %}
-            </div>
-        </section>
-        {% endif %}
-
-        {% if daemon.predictions %}
-        <section class="section">
-            <div class="section-header">Predictions</div>
-            <ul class="list-simple">
-                {% for prediction in daemon.predictions %}
-                <li>{{ prediction }}</li>
-                {% endfor %}
-            </ul>
-        </section>
-        {% endif %}
-
-        <footer>
-            <div class="footer-badges">
-                <span class="footer-badge">API</span>
-                <span class="footer-badge">Real-time</span>
-                <span class="footer-badge">Public</span>
-            </div>
-            <p class="footer-text">
-                Powered by <a href="https://github.com/agileguy/daemon">Daemon</a> |
-                Inspired by <a href="https://daemon.danielmiessler.com">Daniel Miessler</a>
-            </p>
-        </footer>
-    </div>
-
-    <script>
         function copyConfig() {
             const config = `{
   "mcpServers": {
@@ -757,6 +818,9 @@
                 setTimeout(() => btn.textContent = 'Copy', 2000);
             });
         }
+
+        // Start
+        draw();
     </script>
 </body>
 </html>
