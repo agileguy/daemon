@@ -288,6 +288,132 @@
             color: var(--accent);
             text-decoration: none;
         }
+
+        /* MCP Integration Section */
+        .mcp-section {
+            margin-bottom: 3rem;
+        }
+
+        .mcp-card {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--accent);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+        }
+
+        .mcp-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .mcp-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: rgba(34, 197, 94, 0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .mcp-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--bg-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            border: 1px solid var(--border);
+        }
+
+        .mcp-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.9375rem;
+        }
+
+        .mcp-code-block {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--accent);
+            background: transparent;
+            border: 1px solid var(--accent);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .mcp-code-block pre {
+            margin: 0;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        .mcp-code-block code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .mcp-tools {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .tool-item {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+        }
+
+        .tool-name {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .tool-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
@@ -310,6 +436,47 @@
                 Personal API for <strong>{{ daemon.about.name }}</strong>.
                 A live view into who I am and what I care about.
             </p>
+        </section>
+
+        <section class="section mcp-section">
+            <div class="section-header">AI Integration</div>
+            <div class="mcp-card">
+                <div class="mcp-header">
+                    <div class="mcp-logo">MCP</div>
+                    <div class="mcp-badge">Model Context Protocol</div>
+                </div>
+                <p class="mcp-description">
+                    Connect your AI assistant directly to this daemon. Add to your MCP configuration:
+                </p>
+                <div class="mcp-code-block">
+                    <div class="code-header">
+                        <span class="code-label">claude_desktop_config.json</span>
+                        <button class="copy-btn" onclick="copyConfig()">Copy</button>
+                    </div>
+                    <pre><code>{
+  "mcpServers": {
+    "daemon": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "danataka/daemon", "python", "-m", "app.mcp_server"]
+    }
+  }
+}</code></pre>
+                </div>
+                <div class="mcp-tools">
+                    <div class="tool-item">
+                        <span class="tool-name">get_daemon_data</span>
+                        <span class="tool-desc">Get all personal data</span>
+                    </div>
+                    <div class="tool-item">
+                        <span class="tool-name">get_daemon_section</span>
+                        <span class="tool-desc">Get specific section</span>
+                    </div>
+                    <div class="tool-item">
+                        <span class="tool-name">list_daemon_sections</span>
+                        <span class="tool-desc">List available sections</span>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section class="section">
@@ -435,5 +602,23 @@
             </p>
         </footer>
     </div>
+
+    <script>
+        function copyConfig() {
+            const config = `{
+  "mcpServers": {
+    "daemon": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "danataka/daemon", "python", "-m", "app.mcp_server"]
+    }
+  }
+}`;
+            navigator.clipboard.writeText(config).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy', 2000);
+            });
+        }
+    </script>
 </body>
 </html>
