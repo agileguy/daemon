@@ -47,6 +47,9 @@ def parse_section(content: str) -> Any:
         for line in lines:
             # Check for multiline value indicator
             if line.strip().endswith('|'):
+                # Save previous multiline value if any
+                if current_key and current_value:
+                    result[current_key] = ' '.join(current_value)
                 current_key = line.split(':')[0].strip()
                 current_value = []
                 continue
