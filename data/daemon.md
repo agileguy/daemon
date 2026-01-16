@@ -7,7 +7,7 @@ name: Dan Elliott
 title: Technology & AI Enthusiast
 location: Vancouver Area
 bio: |
-  Engineering leader passionate about AI, automation, and building systems
+  Human engineer passionate about AI, automation, and building systems
   that enhance human capabilities. Focused on practical applications of
   AI in enterprise environments and personal productivity.
 
@@ -20,14 +20,11 @@ statement: |
 - Building personal AI infrastructure (PAI)
 - Exploring AI agent architectures
 - Cloud-native observability and monitoring
-- Home automation and smart systems
 
 [INTERESTS]
 - Artificial Intelligence & Machine Learning
 - DevOps & Platform Engineering
-- Security & Privacy
 - Productivity Systems
-- Open Source Software
 
 [FAVORITE_BOOKS]
 - "The Pragmatic Programmer" by David Thomas & Andrew Hunt
@@ -49,15 +46,14 @@ morning: |
 
 [PREFERENCES]
 method: Async over sync, everything CLI 
-learning: Hands-on experimentation, documentation
-work_style: Deep focus blocks, minimal meetings
+learning: Hands-on experimentation
 tech_stack: Python, TypeScript, Docker, K8s
+lifeforms: Dogs over cats
 
 [PREDICTIONS]
 - AI agents will handle 80% of routine knowledge work by 2028
 - Personal AI assistants will become ubiquitous infrastructure
 - The API-first personal brand will become standard
-- Edge computing will dominate the next decade
 
 [CONTACT]
 github: agileguy
