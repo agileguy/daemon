@@ -461,7 +461,7 @@
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        // Section definitions
+        // Section definitions (ai_capabilities merged into ai_assistant)
         const sections = [
             { id: 'about', label: 'About', color: '#22c55e' },
             { id: 'mission', label: 'Mission', color: '#3b82f6' },
@@ -470,7 +470,6 @@
             { id: 'favorite_books', label: 'Books', color: '#8b5cf6' },
             { id: 'tools_i_use', label: 'Tools', color: '#06b6d4' },
             { id: 'ai_assistant', label: 'AI Assistant', color: '#22c55e' },
-            { id: 'ai_capabilities', label: 'AI Capabilities', color: '#10b981' },
             { id: 'daily_routine', label: 'Routine', color: '#f97316' },
             { id: 'preferences', label: 'Preferences', color: '#a855f7' },
             { id: 'predictions', label: 'Predictions', color: '#6366f1' },
@@ -733,10 +732,14 @@
                                     <span class="content-kv-value">${daemon.ai_assistant.stack}</span>
                                 </div>
                             </div>
+                            ${daemon.ai_capabilities ? `
+                                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                                    <div class="content-kv-key" style="margin-bottom: 0.5rem;">Capabilities</div>
+                                    <div class="content-grid">${daemon.ai_capabilities.map(c => `<div class="content-grid-item">${c}</div>`).join('')}</div>
+                                </div>
+                            ` : ''}
                         </div>
                     `;
-                case 'ai_capabilities':
-                    return `<div class="content-grid">${daemon.ai_capabilities.map(c => `<div class="content-grid-item">${c}</div>`).join('')}</div>`;
                 case 'daily_routine':
                     return `<div class="content-kv">${Object.entries(daemon.daily_routine).map(([k,v]) => `
                         <div class="content-kv-item">
