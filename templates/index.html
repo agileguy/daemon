@@ -488,6 +488,36 @@
             color: var(--text-secondary);
             line-height: 1.6;
         }
+
+        .ai-capabilities {
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .ai-capabilities-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .ai-capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .ai-capability-item {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 0.25rem;
+            padding: 0.5rem 0.75rem;
+        }
     </style>
 </head>
 <body>
@@ -637,10 +667,6 @@
                 <div class="ai-description">{{ daemon.ai_assistant.description }}</div>
                 <div class="ai-details">
                     <div class="ai-detail-item">
-                        <div class="ai-detail-label">Capabilities</div>
-                        <div class="ai-detail-value">{{ daemon.ai_assistant.capabilities }}</div>
-                    </div>
-                    <div class="ai-detail-item">
                         <div class="ai-detail-label">Personality</div>
                         <div class="ai-detail-value">{{ daemon.ai_assistant.personality }}</div>
                     </div>
@@ -649,6 +675,16 @@
                         <div class="ai-detail-value">{{ daemon.ai_assistant.stack }}</div>
                     </div>
                 </div>
+                {% if daemon.ai_capabilities %}
+                <div class="ai-capabilities">
+                    <div class="ai-capabilities-label">Capabilities</div>
+                    <div class="ai-capabilities-grid">
+                        {% for capability in daemon.ai_capabilities %}
+                        <div class="ai-capability-item">{{ capability }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </section>
         {% endif %}
