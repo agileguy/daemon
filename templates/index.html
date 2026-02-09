@@ -765,11 +765,15 @@
                         </div>
                     `).join('')}</div>`;
                 case 'oss':
-                    const oss = daemon.oss || {};
-                    const npmPkgs = oss.npm || [];
-                    const pypiPkgs = oss.pypi || [];
+                    const ossList = daemon.oss || [];
+                    const parsedPkgs = ossList.map(item => {
+                        const parts = item.split('|');
+                        return { type: parts[0], name: parts[1], url: parts[2], desc: parts[3] };
+                    });
+                    const npmPkgs = parsedPkgs.filter(p => p.type === 'npm');
+                    const pypiPkgs = parsedPkgs.filter(p => p.type === 'pypi');
                     return `
-                        <p class="content-text" style="margin-bottom: 1rem;">${oss.description || 'Open source projects'}</p>
+                        <p class="content-text" style="margin-bottom: 1rem;">Open source CLIs and TUIs published on npm and PyPI.</p>
                         ${npmPkgs.length ? `
                             <div style="margin-bottom: 1rem;">
                                 <div class="content-kv-key" style="margin-bottom: 0.5rem;">npm</div>
@@ -777,7 +781,7 @@
                                     ${npmPkgs.map(p => `
                                         <a href="${p.url}" target="_blank" class="content-grid-item" style="text-decoration: none; display: block;">
                                             <div style="color: var(--accent); font-weight: 600;">${p.name}</div>
-                                            <div style="font-size: 0.75rem; color: var(--text-muted);">${p.description}</div>
+                                            <div style="font-size: 0.75rem; color: var(--text-muted);">${p.desc}</div>
                                         </a>
                                     `).join('')}
                                 </div>
@@ -790,7 +794,7 @@
                                     ${pypiPkgs.map(p => `
                                         <a href="${p.url}" target="_blank" class="content-grid-item" style="text-decoration: none; display: block;">
                                             <div style="color: var(--accent); font-weight: 600;">${p.name}</div>
-                                            <div style="font-size: 0.75rem; color: var(--text-muted);">${p.description}</div>
+                                            <div style="font-size: 0.75rem; color: var(--text-muted);">${p.desc}</div>
                                         </a>
                                     `).join('')}
                                 </div>

@@ -95,42 +95,9 @@ chess: https://www.chess.com/member/agileguy
 email: agile.guy@hotmail.com
 
 [OSS]
-description: |
-  Open source CLIs and TUIs published on npm and PyPI.
-
-npm:
-- name: bsky-cli
-  url: https://www.npmjs.com/package/bsky-cli
-  repo: https://github.com/agileguy/bluesky-cli
-  description: Command-line interface for Bluesky/ATProto social networking
-
-- name: resend-email-cli
-  url: https://www.npmjs.com/package/resend-email-cli
-  repo: https://github.com/agileguy/resend-cli
-  description: Command-line interface for Resend - The Email API for Developers
-
-- name: pypkg-cli
-  url: https://www.npmjs.com/package/pypkg-cli
-  repo: https://github.com/agileguy/pypi-cli
-  description: Command-line interface for PyPI - The Python Package Index
-
-pypi:
-- name: sequel-ag
-  url: https://pypi.org/project/sequel-ag/
-  repo: https://github.com/agileguy/sequel
-  description: A TUI for browsing Google Cloud resources
-
-- name: rally-tui
-  url: https://pypi.org/project/rally-tui/
-  repo: https://github.com/agileguy/rally-cli
-  description: A TUI for Rally (Broadcom) work item management
-
-- name: logview-ag
-  url: https://pypi.org/project/logview-ag/
-  repo: https://github.com/agileguy/logview
-  description: A testable, responsive log viewer TUI with pluggable log source contexts
-
-- name: logview-ag
-  url: https://pypi.org/project/logview-ag/
-  repo: https://github.com/agileguy/logview
-  description: A testable, responsive log viewer TUI with pluggable log source contexts
+- npm|bsky-cli|https://www.npmjs.com/package/bsky-cli|CLI for Bluesky/ATProto social networking
+- npm|resend-email-cli|https://www.npmjs.com/package/resend-email-cli|CLI for Resend email API
+- npm|pypkg-cli|https://www.npmjs.com/package/pypkg-cli|CLI for PyPI package index
+- pypi|sequel-ag|https://pypi.org/project/sequel-ag/|TUI for browsing Google Cloud resources
+- pypi|rally-tui|https://pypi.org/project/rally-tui/|TUI for Rally work item management
+- pypi|logview-ag|https://pypi.org/project/logview-ag/|Responsive log viewer TUI
