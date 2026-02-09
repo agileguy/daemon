@@ -72,6 +72,7 @@ key2: value2
 | `[PREFERENCES]` | Communication, work style, etc. |
 | `[PREDICTIONS]` | Your views on the future |
 | `[CONTACT]` | How to reach you |
+| `[OSS]` | Open source projects you maintain |
 
 ## API Endpoints
 
