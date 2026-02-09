@@ -129,3 +129,8 @@ pypi:
   url: https://pypi.org/project/logview-ag/
   repo: https://github.com/agileguy/logview
   description: A testable, responsive log viewer TUI with pluggable log source contexts
+
+- name: logview-ag
+  url: https://pypi.org/project/logview-ag/
+  repo: https://github.com/agileguy/logview
+  description: A testable, responsive log viewer TUI with pluggable log source contexts

@@ -474,6 +474,7 @@
             { id: 'preferences', label: 'Preferences', color: '#a855f7' },
             { id: 'predictions', label: 'Predictions', color: '#6366f1' },
             { id: 'contact', label: 'Contact', color: '#14b8a6' },
+            { id: 'oss', label: 'OSS', color: '#f97316' },
             { id: 'mcp', label: 'MCP', color: '#22c55e' }
         ].filter(s => s.id === 'mcp' || daemon[s.id]);
 
@@ -763,6 +764,39 @@
                             <span class="content-kv-value">${v}</span>
                         </div>
                     `).join('')}</div>`;
+                case 'oss':
+                    const oss = daemon.oss || {};
+                    const npmPkgs = oss.npm || [];
+                    const pypiPkgs = oss.pypi || [];
+                    return `
+                        <p class="content-text" style="margin-bottom: 1rem;">${oss.description || 'Open source projects'}</p>
+                        ${npmPkgs.length ? `
+                            <div style="margin-bottom: 1rem;">
+                                <div class="content-kv-key" style="margin-bottom: 0.5rem;">npm</div>
+                                <div class="content-grid">
+                                    ${npmPkgs.map(p => `
+                                        <a href="${p.url}" target="_blank" class="content-grid-item" style="text-decoration: none; display: block;">
+                                            <div style="color: var(--accent); font-weight: 600;">${p.name}</div>
+                                            <div style="font-size: 0.75rem; color: var(--text-muted);">${p.description}</div>
+                                        </a>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        ${pypiPkgs.length ? `
+                            <div>
+                                <div class="content-kv-key" style="margin-bottom: 0.5rem;">PyPI</div>
+                                <div class="content-grid">
+                                    ${pypiPkgs.map(p => `
+                                        <a href="${p.url}" target="_blank" class="content-grid-item" style="text-decoration: none; display: block;">
+                                            <div style="color: var(--accent); font-weight: 600;">${p.name}</div>
+                                            <div style="font-size: 0.75rem; color: var(--text-muted);">${p.description}</div>
+                                        </a>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    `;
                 case 'mcp':
                     return `
                         <div class="mcp-header">
