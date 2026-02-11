@@ -758,10 +758,26 @@
                 case 'predictions':
                     return `<ul class="content-list">${daemon.predictions.map(p => `<li>${p}</li>`).join('')}</ul>`;
                 case 'contact':
+                    const formatContactValue = (key, value) => {
+                        const k = key.toLowerCase();
+                        if (k === 'github') {
+                            return `<a href="https://github.com/${value}" target="_blank" style="color: var(--accent); text-decoration: none;">${value}</a>`;
+                        } else if (k === 'linkedin') {
+                            return `<a href="https://linkedin.com/in/${value}" target="_blank" style="color: var(--accent); text-decoration: none;">${value}</a>`;
+                        } else if (k === 'bluesky') {
+                            const handle = value.replace('@', '');
+                            return `<a href="https://bsky.app/profile/${handle}" target="_blank" style="color: var(--accent); text-decoration: none;">${value}</a>`;
+                        } else if (k === 'email') {
+                            return `<a href="mailto:${value}" style="color: var(--accent); text-decoration: none;">${value}</a>`;
+                        } else if (value.startsWith('http://') || value.startsWith('https://')) {
+                            return `<a href="${value}" target="_blank" style="color: var(--accent); text-decoration: none;">${value}</a>`;
+                        }
+                        return value;
+                    };
                     return `<div class="content-kv">${Object.entries(daemon.contact).map(([k,v]) => `
                         <div class="content-kv-item">
                             <span class="content-kv-key">${k}</span>
-                            <span class="content-kv-value">${v}</span>
+                            <span class="content-kv-value">${formatContactValue(k, v)}</span>
                         </div>
                     `).join('')}</div>`;
                 case 'oss':
