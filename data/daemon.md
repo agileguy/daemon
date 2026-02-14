@@ -95,6 +95,7 @@ chess: https://www.chess.com/member/agileguy
 email: agile.guy@hotmail.com
 
 [OSS]
+- npm|posterboy|https://www.npmjs.com/package/posterboy|CLI for cross-platform social media posting via Upload-Post
 - npm|bsky-cli|https://www.npmjs.com/package/bsky-cli|CLI for Bluesky/ATProto social networking
 - npm|resend-email-cli|https://www.npmjs.com/package/resend-email-cli|CLI for Resend email API
 - npm|pypkg-cli|https://www.npmjs.com/package/pypkg-cli|CLI for PyPI package index
