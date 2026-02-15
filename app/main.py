@@ -12,8 +12,11 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.openapi.docs import get_swagger_ui_html
+from mcp.server.sse import SseServerTransport
+from starlette.responses import Response
 
 from .parser import get_daemon_data
+from .mcp_server import server as mcp_server
 
 # Paths
 BASE_DIR = Path(__file__).parent.parent
@@ -260,6 +263,24 @@ async def custom_swagger_ui_html():
 """,
         media_type="text/html",
     )
+
+# MCP SSE transport
+sse_transport = SseServerTransport("/mcp/messages/")
+
+
+@app.get("/mcp/sse")
+async def handle_sse(request: Request):
+    """SSE endpoint for MCP clients."""
+    async with sse_transport.connect_sse(
+        request.scope, request.receive, request._send
+    ) as streams:
+        await mcp_server.run(
+            streams[0], streams[1], mcp_server.create_initialization_options()
+        )
+    return Response()
+
+
+app.mount("/mcp/messages/", app=sse_transport.handle_post_message)
 
 # Templates
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))

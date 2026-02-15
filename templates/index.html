@@ -832,9 +832,7 @@
                             <pre><code>{
   "mcpServers": {
     "daemon": {
-      "command": "uvx",
-      "args": ["--from", "git+https://github.com/agileguy/daemon",
-        "python", "-m", "app.mcp_server"]
+      "url": "https://daemon.agileguy.ca/mcp/sse"
     }
   }
 }</code></pre>
@@ -863,8 +861,7 @@
             const config = `{
   "mcpServers": {
     "daemon": {
-      "command": "uvx",
-      "args": ["--from", "git+https://github.com/agileguy/daemon", "python", "-m", "app.mcp_server"]
+      "url": "https://daemon.agileguy.ca/mcp/sse"
     }
   }
 }`;
