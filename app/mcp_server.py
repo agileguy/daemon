@@ -2,25 +2,42 @@
 MCP Server for Daemon API.
 
 Exposes the daemon's personal API data as MCP tools for AI assistants.
+Fetches data from the remote API at daemon.agileguy.ca.
+
 Run with: python -m app.mcp_server
+
+Configure in Claude Code (~/.claude/settings.json):
+{
+  "mcpServers": {
+    "daemon": {
+      "command": "python",
+      "args": ["-m", "app.mcp_server"],
+      "cwd": "/path/to/daemon"
+    }
+  }
+}
 """
 
 import asyncio
 import json
-from pathlib import Path
+from urllib.request import urlopen, Request
+from urllib.error import URLError
 
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent
 
-from .parser import get_daemon_data
+API_BASE = "https://daemon.agileguy.ca"
 
-# Path to data directory
-BASE_DIR = Path(__file__).parent.parent
-DATA_DIR = BASE_DIR / "data"
-
-# Create MCP server
 server = Server("daemon")
+
+
+def _fetch_json(path: str) -> dict:
+    """Fetch JSON from the remote daemon API."""
+    url = f"{API_BASE}{path}"
+    req = Request(url, headers={"Accept": "application/json"})
+    with urlopen(req, timeout=10) as resp:
+        return json.loads(resp.read().decode())
 
 
 @server.list_tools()
@@ -65,32 +82,26 @@ async def list_tools() -> list[Tool]:
 @server.call_tool()
 async def call_tool(name: str, arguments: dict) -> list[TextContent]:
     """Handle MCP tool calls."""
-    daemon_data = get_daemon_data(DATA_DIR)
+    try:
+        if name == "get_daemon_data":
+            data = _fetch_json("/api/daemon")
+            return [TextContent(type="text", text=json.dumps(data, indent=2))]
 
-    if name == "get_daemon_data":
-        return [TextContent(type="text", text=json.dumps(daemon_data, indent=2))]
+        elif name == "get_daemon_section":
+            section = arguments.get("section", "")
+            data = _fetch_json(f"/api/daemon/{section}")
+            return [TextContent(type="text", text=json.dumps(data, indent=2))]
 
-    elif name == "get_daemon_section":
-        section = arguments.get("section", "").lower()
-        if section not in daemon_data:
-            available = ", ".join(daemon_data.keys())
-            return [
-                TextContent(
-                    type="text",
-                    text=f"Section '{section}' not found. Available sections: {available}",
-                )
-            ]
-        return [
-            TextContent(
-                type="text", text=json.dumps({section: daemon_data[section]}, indent=2)
-            )
-        ]
+        elif name == "list_daemon_sections":
+            data = _fetch_json("/api/sections")
+            return [TextContent(type="text", text=json.dumps(data, indent=2))]
 
-    elif name == "list_daemon_sections":
-        sections = list(daemon_data.keys())
-        return [TextContent(type="text", text=json.dumps({"sections": sections}, indent=2))]
+        return [TextContent(type="text", text=f"Unknown tool: {name}")]
 
-    return [TextContent(type="text", text=f"Unknown tool: {name}")]
+    except URLError as e:
+        return [TextContent(type="text", text=f"Failed to reach daemon API: {e}")]
+    except Exception as e:
+        return [TextContent(type="text", text=f"Error: {e}")]
 
 
 async def main():

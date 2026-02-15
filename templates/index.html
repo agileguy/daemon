@@ -832,9 +832,8 @@
                             <pre><code>{
   "mcpServers": {
     "daemon": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm",
-        "danataka/daemon",
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/agileguy/daemon",
         "python", "-m", "app.mcp_server"]
     }
   }
@@ -864,8 +863,8 @@
             const config = `{
   "mcpServers": {
     "daemon": {
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "danataka/daemon", "python", "-m", "app.mcp_server"]
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/agileguy/daemon", "python", "-m", "app.mcp_server"]
     }
   }
 }`;
