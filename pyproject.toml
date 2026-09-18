@@ -4,13 +4,19 @@ version = "0.1.0"
 description = "Personal API daemon - a public API that represents you"
 requires-python = ">=3.11"
 dependencies = [
-    "fastapi>=0.115.0",
-    "uvicorn[standard]>=0.32.0",
-    "jinja2>=3.1.0",
-    "python-multipart>=0.0.9",
-    "pyyaml>=6.0",
-    "mcp>=1.0.0",
-    "sse-starlette>=1.0.0",
+    # Pinned to the exact set from the last known-good image (built 2026-02-15).
+    # Open lower bounds made rebuilds non-reproducible: a 2026-09-18 rebuild pulled
+    # mcp >=1.27 (removed Server.list_tools) and a Starlette carrying the new
+    # TemplateResponse(request, name, ...) signature, breaking startup and then /.
+    # Unpin deliberately, one at a time, with a deploy check each time.
+    "fastapi==0.129.0",
+    "starlette==0.52.1",
+    "uvicorn[standard]==0.40.0",
+    "jinja2==3.1.6",
+    "python-multipart==0.0.22",
+    "pyyaml==6.0.3",
+    "mcp==1.26.0",
+    "sse-starlette==3.2.0",
 ]
 
 [project.optional-dependencies]
