@@ -7,16 +7,32 @@ name: Dan Elliott
 title: Technology & AI Enthusiast
 location: Vancouver Area
 bio: |
-  Human engineer passionate about AI, automation, and building systems
-  that enhance human capabilities. Focused on practical applications of
-  AI in enterprise environments and personal productivity.
+  Engineer working on practical AI: what these systems can actually do for
+  small organisations and for the people whose field is being rewritten by
+  them. Splits time between Vancouver and rural Alberta. Six kids, two dogs,
+  a rowing machine and a chess habit.
 
 [MISSION]
 statement: |
-  To leverage technology as a force multiplier for human potential,
-  building systems that automate the mundane and amplify creativity.
+  Give small Canadian charities their capacity back, and transfer real
+  practical AI skill to the people whose field is being rewritten by it.
+missions: |
+  Give my kids a solid footing into adulthood - work they are genuinely
+  enthused by, and whatever education they judge will get them there.
+
+  Build and donate AI solutions to Canadian registered charities, so more of
+  what they have goes to the mission they exist for.
+
+  Transfer real, practical AI skill to the people whose field is being
+  rewritten by it: veterans whose hard-won experience deserves magnifying
+  rather than replacing, and juniors arriving just as the bottom rung
+  disappears. Not hype, not grad-level maths.
+
+  Build toward a warmer-climate life once the kids are settled.
 
 [CURRENT_FOCUS]
+- StoicAI - AI solutions donated to Canadian registered charities
+- Teaching what I have learned: two artifacts a month, at agileguy.ca
 - Building personal AI infrastructure (PAI)
 - Exploring AI agent architectures
 - Cloud-native observability and monitoring
@@ -31,7 +47,7 @@ statement: |
 [FAVORITE_BOOKS]
 - "The Pragmatic Programmer" by David Thomas & Andrew Hunt
 - "Thinking, Fast and Slow" by Daniel Kahneman
-- "Green Lights" by Matthew McConaughey
+- "Greenlights" by Matthew McConaughey
 - "Atomic Habits" by James Clear
 - "Meditations" by Marcus Aurelius
 - "Bobby Fischer Teaches Chess" by Bobby Fischer
@@ -45,7 +61,7 @@ statement: |
 
 [AI_ASSISTANT]
 name: PAI (Paisley)
-model: Claude Opus 4.5
+model: Claude Opus 5
 platform: Claude Code CLI
 description: |
   Personal AI Infrastructure - a custom-configured AI assistant that serves
@@ -74,7 +90,7 @@ stack: TypeScript preferred, bun for JS, uv for Python, CLI-first architecture
 
 [DAILY_ROUTINE]
 morning: |
-  Wake early, journal, yoga, sauna, shower, and go get it!
+  Wake early, journal, yoga, row, and go get it!
 
 [PREFERENCES]
 method: Async over sync, everything CLI 
@@ -83,6 +99,7 @@ tech_stack: Python, TypeScript, Docker, K8s
 lifeforms: Dogs over cats
 
 [PREDICTIONS]
+- Extensive generative-AI use becomes table stakes in professional knowledge work by the end of 2026, to the point where not using it is a visible competitive disadvantage
 - AI agents will handle 80% of routine knowledge work by 2028
 - Personal AI assistants will become ubiquitous infrastructure
 - The API-first personal brand will become standard
